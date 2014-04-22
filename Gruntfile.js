@@ -5,6 +5,24 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
+    useminPrepare: {
+      html: 'app/index.html',
+      options: {
+        dest: 'built'
+      }
+    },
+
+    usemin: {
+      html: ['built/index.html']
+    },
+
+    copy: {
+      task: {
+        src: 'app/index.html',
+        dest: 'built/index.html'
+      }
+    },
+
     express: {
       server: {
         options: {
@@ -13,8 +31,20 @@ module.exports = function(grunt) {
           bases: ['app'],
           livereload: true
         }
+      },
+      built: {
+        options: {
+          port: 9000,
+          hostname: '0.0.0.0',
+          bases: ['built']
+        }
       }
     },
+
+    clean: {
+      prepare: 'built'
+    },
+
 
     open: {
       all: {
@@ -30,20 +60,25 @@ module.exports = function(grunt) {
       }
     },
 
-    bowerInstall: {
-      target: {
-        src: 'app/index.html',
-        ignorePath: 'app/'
-      },
-      sass: {
-        src: ['app/styles/{,*/}*.{scss,sass}'],
-        ignorePath: 'app/bower_components/'
+    cssmin: {
+      dist: {
+        files: {
+          'app/styles/css/main.min.css': 'app/styles/css/main.css'
+        }
       }
     },
 
-    clean: {
-      prepare: 'app-built'
+    bowerInstall: {
+      target: {
+        src: ['app/index.html','app/styles/css/*.css'],
+        ignorePath: 'app/'
+      },
+      css: {
+        src: 'app/styles/css/*.css'
+      }
     },
+
+
 
     sass: {
       dist: {
@@ -85,6 +120,18 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('build', ['bowerInstall', 'jshint', 'sass', 'concat', 'uglify'])
+  grunt.registerTask('build', [
+    'clean',
+    'copy',
+    'useminPrepare',
+    'sass',
+    'bowerInstall',
+    'concat',
+    'cssmin',
+    'uglify',
+    'usemin'
+  ])
+
   grunt.registerTask('serve', ['express', 'open', 'watch']);
+  grunt.registerTask('serveBuilt', ['express:built', 'open', 'watch']);
 }
