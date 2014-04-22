@@ -1,0 +1,20 @@
+{
+  "name": "website",
+  "version": "0.0.0",
+  "homepage": "joefitter.com",
+  "authors": [
+    "Joe Fitter <joefitter@hotmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1"
+  }
+}
