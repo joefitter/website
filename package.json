@@ -25,6 +25,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-contrib-sass": "^0.7.3",
     "grunt-open": "^0.2.3",
-    "grunt-express": "^1.2.1"
+    "grunt-express": "^1.2.1",
+    "grunt-bower-install": "^1.4.0",
+    "grunt-bower-task": "^0.3.4"
   }
 }

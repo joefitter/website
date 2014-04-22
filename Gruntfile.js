@@ -30,6 +30,17 @@ module.exports = function(grunt) {
       }
     },
 
+    bowerInstall: {
+      target: {
+        src: 'app/index.html',
+        ignorePath: 'app/'
+      },
+      sass: {
+        src: ['app/styles/{,*/}*.{scss,sass}'],
+        ignorePath: 'app/bower_components/'
+      }
+    },
+
     clean: {
       prepare: 'app-built'
     },
@@ -53,8 +64,19 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      bower: {
+        files: ['bower.json'],
+        tasks: ['bowerInstall']
+      },
       html: {
         files: 'app/index.html',
+        options: {
+          livereload: true
+        }
+      },
+      styles: {
+        files: 'app/styles/scss/*.scss',
+        tasks: ['sass'],
         options: {
           livereload: true
         }
@@ -63,5 +85,6 @@ module.exports = function(grunt) {
 
   });
 
+  grunt.registerTask('build', ['bowerInstall', 'jshint', 'sass', 'concat', 'uglify'])
   grunt.registerTask('serve', ['express', 'open', 'watch']);
 }
