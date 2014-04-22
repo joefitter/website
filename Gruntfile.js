@@ -5,11 +5,20 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
-    connect: {
-      dev: {
+    express: {
+      server: {
         options: {
-          port: 9000
+          port: 9000,
+          hostname: '0.0.0.0',
+          bases: ['app'],
+          livereload: true
         }
+      }
+    },
+
+    open: {
+      all: {
+        path: 'http://localhost:<%= express.server.options.port%>'
       }
     },
 
@@ -25,6 +34,17 @@ module.exports = function(grunt) {
       prepare: 'app-built'
     },
 
+    sass: {
+      dist: {
+        options: {
+          style: 'expanded'
+        },
+        files: {
+          'app/styles/css/main.css': 'app/styles/scss/main.scss'
+        }
+      }
+    },
+
     jshint: {
       options: {
         jshintrc: true
@@ -33,12 +53,15 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      js: {
-        files: 'app/js/**/*.js',
-        tasks: ['jshint']
+      html: {
+        files: 'app/index.html',
+        options: {
+          livereload: true
+        }
       }
     }
+
   });
 
-  grunt.registerTask('serve', ['connect', 'watch']);
+  grunt.registerTask('serve', ['express', 'open', 'watch']);
 }
